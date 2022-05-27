@@ -21,4 +21,4 @@ app.use(rentalsRouter)
 
 // port
 const port = process.env.PORT || 4000
-app.listen(port, () => console.log("Server in running"))
+app.listen(port, () => console.log("Server is running"))
