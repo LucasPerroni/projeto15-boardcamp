@@ -1,26 +1,18 @@
 import db from "../database.js"
 
 export async function getGames(req, res) {
-  const { name } = req.query
+  let { name } = req.query
+  if (!name) {
+    name = ""
+  }
 
-  let query
-  if (name) {
-    query = `
+  try {
+    const games = await db.query(`
       SELECT games.*, categories.name as "categoryName"
       FROM games
       JOIN categories ON games."categoryId" = categories.id
       WHERE LOWER(games.name) LIKE '${name}%'
-    `
-  } else {
-    query = `
-      SELECT games.*, categories.name as "categoryName"
-      FROM games
-      JOIN categories ON games."categoryId" = categories.id
-    `
-  }
-
-  try {
-    const games = await db.query(query)
+    `)
     res.send(games.rows)
   } catch (e) {
     console.log(e)
